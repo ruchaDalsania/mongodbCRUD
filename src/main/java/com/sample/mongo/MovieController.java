@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,32 +64,16 @@ public class MovieController {
 		}
 	}
 
-//	@GetMapping("/movies")
-//	public ResponseEntity<List<Movie>> getAllMovies(@RequestParam(required = false) String title) {
-//		System.out.println(".....hi..... i am here......5");
-//		com.mongodb.MongoClient mongoClient = new com.mongodb.MongoClient(new MongoClientURI(
-//				"mongodb+srv://m001-student:m001-mongodb-basics@cluster0-jxeqq.mongodb.net/test?authSource=admin&replicaSet=Cluster0-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true"));
-//		MongoDatabase database = mongoClient.getDatabase("video");
-//		MongoCollection<org.bson.Document> collection = database.getCollection("movies");
-//		Movie m = new Movie("rucha", 10, 1992);
-//		Document document = new Document().append("title", "rucha").append("viewerRating", 9.9).append("year", 1992);
-//		// collection.insertOne(document);
-//		System.out.println(collection.find().first().toJson());
-//		System.out.println("*****");
-//		try {
-//			List<Movie> movies = new ArrayList<Movie>();
-//			if (title == null)
-//				moviesRepository.findAll().forEach(movies::add);
-//			else
-//				moviesRepository.findByTitleContaining(title).forEach(movies::add);
-//			System.out.println("*****" + movies.size() + "*****");
-//			if (movies.isEmpty()) {
-//				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//			}
-//			return new ResponseEntity<>(movies, HttpStatus.OK);
-//		} catch (Exception e) {
-//			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//	}
+	@PostMapping("/movies")
+	public void getAllMovies(@RequestBody Movie movie) {
+		com.mongodb.MongoClient mongoClient = new com.mongodb.MongoClient(new MongoClientURI("http://127.0.0.1:27017"));
+		MongoDatabase database = mongoClient.getDatabase("video");
+		MongoCollection<org.bson.Document> collection = database.getCollection("movies");
+		Document document = new Document().append("title", movie.getTitle())
+				.append("viewerRating", movie.getViewerRating()).append("year", movie.getYear());
+		collection.insertOne(document);
+		log.info(collection.find().first().toJson());
+
+	}
 
 }
