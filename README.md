@@ -62,9 +62,11 @@ git push heroku master
 herkou open
 ```
 Creates an app with the specified name, without setting up a git remote
+```
 heroku create <APP-NAME> --no-remote
 heroku open --app <APP-NAME>
 heroku logs --app <APP-NAME>
+```
 
 ```sh
 https://safe-meadow-94931.herokuapp.com/api/v2/cloud/movies
